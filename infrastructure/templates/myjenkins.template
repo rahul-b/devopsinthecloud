@@ -1,23 +1,38 @@
-{
-  "AWSTemplateFormatVersion" : "2010-09-09",
-  
-  "Description" : "CloudFormation Template to provision a Jenkins instance",
-  
-  "Parameters" : {
-      
-  
-  },
-  
-  "Mappings" : {
-  
-  },
-    
-  "Resources" : {     
-        
-  },
-  
-  "Outputs" : {
-   
-  }
-
+TemplateFormatVersion" : "2010-09-09",
+"Description": "Sample template to bring up Puppet Master instance that can be used to bootstrap and manage Puppet Clients. The Puppet Master is 
+populated from an embedded template that defines the set of applications to load. **WARNING** This template creates one or more Amazon EC2 instances. 
+You will be billed for the AWS resources used if you create a stack from this template.",Integrating AWS CloudFormation with Puppet 2
+"Parameters" : {
+"InstanceType" : {
+"Description" : "EC2 instance type for PuppetMaster",
+"Type" : "String",
+"Default" : "t1.micro",
+"AllowedValues" : [ "t1.micro", "m1.small", "m1.large", "m1.xlarge", "m2.xlarge", "m2.2xlarge", "m2.4xlarge", "c1.medium", "c1.xlarge", 
+"cc1.4xlarge" ],
+"ConstraintDescription" : "must contain only alphanumeric characters."
+},
+"KeyName" : {
+"Description" : "Name of an existing EC2 KeyPair to enable SSH access to the PuppetMaster",
+"Type" : "String"
+}, 
+"ContentManifest" : {
+"Default" : "/wordpress/: { include wordpress }",
+"Description" : "Manifest of roles to add to nodes.pp",
+"Type" : "String"
+},
+"ContentLocation" : {
+"Default" : "https://s3.amazonaws.com/cloudformation-examples/wordpress-puppet-config.tar.gz",
+"Description" : "Location of package (Zip, GZIP or Git repository URL) that includes the PuppetMaster content",
+"Type" : "String"
 }
+},
+"Mappings" : {
+"AWSInstanceType2Arch" : {
+"t1.micro" : { "Arch" : "32" },
+"m1.small" : { "Arch" : "32" },
+"m1.large" : { "Arch" : "64" },
+"m1.xlarge" : { "Arch" : "64" },
+"m2.xlarge" : { "Arch" : "64" },
+"m2.2xlarge" : { "Arch" : "64" },
+"m2.4xlarge" : { "Arch" : "64" },
+"c1.medium" : { "Arch" : "32" },
